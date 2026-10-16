@@ -279,14 +279,20 @@ Non-PEM content may appear before or after the CERTIFICATE PEM blocks and is unv
 to allow for explanatory text as described in [section 5.2 of RFC7468](https://www.rfc-editor.org/rfc/rfc7468#section-5.2).
 
 When encoded in JSON or YAML, this field is base-64 encoded.
-A CertificateSigningRequest containing the example certificate above would look like this:
+A CertificateSigningRequest containing the example certificate requesting access above would look like this:
 
 ```yaml
 apiVersion: certificates.k8s.io/v1
 kind: CertificateSigningRequest
-...
-status:
-  certificate: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JS..."
+metadata:
+  name: <Name of CSR>
+spec:
+  groups:
+  - system:authenticated
+  request: <insert base64 enocoded cert>
+  signerName: kubernetes.io/kube-apiserver-client
+  usages:
+  - client auth
 ```
 
 ## Approval or rejection  {#approval-rejection}
